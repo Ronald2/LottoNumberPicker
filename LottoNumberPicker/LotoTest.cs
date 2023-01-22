@@ -23,13 +23,13 @@
         return matches > 0 ? $"You have {matches} matches." : "You have no matches.";
     }
 
+    //the Winning numbers could be read from a file, a database, or an external API
+    //this is only for testing.
     public List<int> GetWinningNumbers(GameType gameType)
     {
         var winningNumbers = new List<int>();
         var gameSettings = gameType.GetGameSettings();
 
-        //the Winning numbers could be read from a file, a database, or an external API
-        //this is only for testing.
         while (winningNumbers.Count < gameSettings.TotalNumbers)
         {
             var num = _random.Next(1, gameSettings.MaxNumber + 1);
