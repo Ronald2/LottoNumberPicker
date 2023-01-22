@@ -4,5 +4,7 @@
 public enum GameType
 {
     Loto,
-    SuperKino
+    SuperKino,
+    MegaMillions,
+    PowerBall
 }

@@ -3,10 +3,12 @@
 var gameTypeMap = new Dictionary<int, GameType>()
     {
         { 1, GameType.Loto },
-        { 2, GameType.SuperKino }
+        { 2, GameType.SuperKino },
+        { 3, GameType.MegaMillions },
+        { 4, GameType.PowerBall },
     };
 
-Console.WriteLine("Please select a game type (1 for Loto or 2 for SuperKino):");
+Console.WriteLine("Please select a game type (1 for Loto, 2 for SuperKino, 3 for MegaMillions, 4 for Powerball):");
 
 int gameTypeInput;
 
