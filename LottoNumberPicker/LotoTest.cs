@@ -27,14 +27,15 @@
     //this is only for testing.
     public List<int> GetWinningNumbers(GameType gameType)
     {
-        var winningNumbers = new List<int>();
-        var gameSettings = gameType.GetGameSettings();
+        return GetNumbers(gameType);
+        //var winningNumbers = new HashSet<int>();
+        //var gameSettings = gameType.GetGameSettings();
 
-        while (winningNumbers.Count < gameSettings.TotalNumbers)
-        {
-            var num = _random.Next(1, gameSettings.MaxNumber + 1);
-            winningNumbers.Add(num);
-        }
-        return winningNumbers;
+        //while (winningNumbers.Count < gameSettings.TotalNumbers)
+        //{
+        //    var num = _random.Next(1, gameSettings.MaxNumber + 1);
+        //    winningNumbers.Add(num);
+        //}
+        //return winningNumbers.ToList();
     }
 }
