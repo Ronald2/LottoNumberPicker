@@ -1,9 +1,9 @@
 # Lottery Number Generator
 
-This program is designed to generate random lotto numbers for different types of games such as Loto, SuperKino, MegaMillions, and PowerBall. The program allows the user to select the type of game they want to play, generate a specified number of lists of random numbers, and also has the option to compare the generated numbers with the winning numbers.
+This program is designed to generate random lotto numbers for different types of games such as Loto, Loto Pool, SuperKino, MegaMillions, and PowerBall. The program allows the user to select the type of game they want to play, generate a specified number of lists of random numbers, and also has the option to compare the generated numbers with the winning numbers.
 
 # Features
--The program allows the user to select the type of game they want to play (Loto, SuperKino, MegaMillions, or PowerBall).
+-The program allows the user to select the type of game they want to play (Loto, Loto Pool, SuperKino, MegaMillions, or PowerBall).
 
 -The program allows the user to generate a specified number of lists of random numbers.
 
