@@ -3,6 +3,7 @@
     private static readonly Dictionary<GameType, GameSettings> _gameSettings = new Dictionary<GameType, GameSettings>
     {
         { GameType.Loto, new GameSettings { MaxNumber = 38, TotalNumbers = 6 } },
+        {GameType.PoolLoto, new GameSettings {MaxNumber = 27, TotalNumbers = 5} },
         { GameType.SuperKino, new GameSettings { MaxNumber = 70, TotalNumbers = 20 } },
         {GameType.MegaMillions, new GameSettings {MaxNumber = 70, TotalNumbers = 5 } },
         {GameType.PowerBall, new GameSettings {MaxNumber = 69, TotalNumbers = 5} }

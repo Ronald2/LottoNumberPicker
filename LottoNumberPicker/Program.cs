@@ -5,10 +5,11 @@ var gameTypeMap = new Dictionary<int, GameType>()
             { 1, GameType.Loto },
             { 2, GameType.SuperKino },
             { 3, GameType.MegaMillions },
-            { 4, GameType.PowerBall }
+            { 4, GameType.PowerBall },
+            {5, GameType.PoolLoto }
         };
 
-Console.WriteLine("Please select a game type (1 for Loto, 2 for SuperKino, 3 for MegaMillions, 4 for PowerBall):");
+Console.WriteLine("Please select a game type (1 for Loto, 2 for SuperKino, 3 for MegaMillions, 4 for PowerBall, 5 for Loto Pool):");
 int gameTypeInput;
 if (!int.TryParse(Console.ReadLine(), out gameTypeInput) || !gameTypeMap.ContainsKey(gameTypeInput))
 {

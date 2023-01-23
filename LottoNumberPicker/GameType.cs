@@ -6,5 +6,6 @@ public enum GameType
     Loto,
     SuperKino,
     MegaMillions,
-    PowerBall
+    PowerBall,
+    PoolLoto
 }
