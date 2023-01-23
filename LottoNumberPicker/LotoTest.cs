@@ -17,6 +17,7 @@
 
         return numbers.OrderBy(x => x).ToList();
     }
+
     public string CompareNumbers(List<int> generatedNumbers, List<int> winningNumbers)
     {
         var matches = generatedNumbers.Intersect(winningNumbers).Count();
@@ -28,14 +29,5 @@
     public List<int> GetWinningNumbers(GameType gameType)
     {
         return GetNumbers(gameType);
-        //var winningNumbers = new HashSet<int>();
-        //var gameSettings = gameType.GetGameSettings();
-
-        //while (winningNumbers.Count < gameSettings.TotalNumbers)
-        //{
-        //    var num = _random.Next(1, gameSettings.MaxNumber + 1);
-        //    winningNumbers.Add(num);
-        //}
-        //return winningNumbers.ToList();
     }
 }
