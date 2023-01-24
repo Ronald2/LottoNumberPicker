@@ -30,4 +30,15 @@
     {
         return GetNumbers(gameType);
     }
+
+    public void SaveNumbersToFile(List<int> generatedNumbers, string fileName)
+    {        
+        using (var file = new StreamWriter(fileName))
+        {            
+            foreach (var number in generatedNumbers)
+            {
+                file.WriteLine(number);
+            }
+        }
+    }
 }
