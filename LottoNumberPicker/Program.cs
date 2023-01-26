@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-var gameTypeMap = new Dictionary<int, GameType>()
+﻿var gameTypeMap = new Dictionary<int, GameType>()
         {
             { 1, GameType.Loto },
             { 2, GameType.SuperKino },
@@ -18,7 +16,7 @@ if (!int.TryParse(Console.ReadLine(), out gameTypeInput) || !gameTypeMap.Contain
 }
 
 GameType gameType = gameTypeMap[gameTypeInput];
-var test = new LotoTest();
+var test = new LotoTest(gameType);
 
 Console.WriteLine("Please enter the number of lists of numbers you want to generate:");
 int numberOfLists;
@@ -32,13 +30,13 @@ Console.WriteLine("Do you want to compare the numbers with the winning numbers? 
 string answer = Console.ReadLine();
 if (answer.ToLower() == "y")
 {
-    var winningNumbers = test.GetWinningNumbers(gameType);
+    var winningNumbers = test.GetWinningNumbers();
     var winningNumbersString = string.Join(", ", winningNumbers.Select(x => string.Format("{0:D2}", x)));
     Console.WriteLine("Winning Numbers: " + winningNumbersString);
 
     for (int i = 1; i <= numberOfLists; i++)
     {
-        var generatedTest = test.GetNumbers(gameType);
+        var generatedTest = test.GetNumbers();
         var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
         Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
         var result = test.CompareNumbers(generatedTest, winningNumbers);
@@ -49,8 +47,31 @@ else
 {
     for (int i = 1; i <= numberOfLists; i++)
     {
-        var generatedTest = test.GetNumbers(gameType);
+        var generatedTest = test.GetNumbers();
         var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
         Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
     }
 }
+
+////var type = GameType.Loto;
+////var test = new LotoTest(type);
+////List<int> winningNumber = test.GetWinningNumbers();
+////int count = 0;
+
+
+////while (true)
+////{
+////    int match = 0;
+////    var generatedNumber = test.GetNumbers();
+////    foreach (var item in generatedNumber)
+////    {
+////        if (winningNumber.Contains(item))
+////        {
+////            match++;
+////        }
+////    }
+////    count++;
+////    if (match == 6)
+////    { break; }
+////}
+////Console.WriteLine($"you have played {count} tickets for win 6 numbers in loto");

@@ -1,12 +1,15 @@
 ﻿public class LotoTest
 {
     private readonly Random _random = new Random();
+    private GameType _gameType;
 
-    public LotoTest() { }
+    public LotoTest(GameType gameType) {
+        _gameType= gameType;
+    }
 
-    public List<int> GetNumbers(GameType gameType)
+    public List<int> GetNumbers()
     {
-        var gameSettings = gameType.GetGameSettings();
+        var gameSettings = _gameType.GetGameSettings();
         var numbers = new HashSet<int>();
 
         while (numbers.Count < gameSettings.TotalNumbers)
@@ -26,9 +29,9 @@
 
     //the Winning numbers could be read from a file, a database, or an external API
     //this is only for testing.
-    public List<int> GetWinningNumbers(GameType gameType)
+    public List<int> GetWinningNumbers()
     {
-        return GetNumbers(gameType);
+        return GetNumbers();
     }
 
     public void SaveNumbersToFile(List<int> generatedNumbers, string fileName)
