@@ -1,7 +1,7 @@
 ﻿public class LotoTest
 {
     private readonly Random _random = new Random();
-    private GameType _gameType;
+    private readonly GameType _gameType;
 
     public LotoTest(GameType gameType) {
         _gameType= gameType;
