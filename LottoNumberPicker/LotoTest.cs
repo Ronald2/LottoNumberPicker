@@ -3,8 +3,11 @@
     private readonly Random _random = new Random();
     private readonly GameType _gameType;
 
-    public LotoTest(GameType gameType) {
-        _gameType= gameType;
+  
+
+    public LotoTest(GameType gameType)
+    {
+        _gameType = gameType;
     }
 
     public List<int> GetNumbers()
@@ -21,10 +24,15 @@
         return numbers.OrderBy(x => x).ToList();
     }
 
-    public string CompareNumbers(List<int> generatedNumbers, List<int> winningNumbers)
+    public void SaveNumbersToFile(List<int> generatedNumbers, string fileName)
     {
-        var matches = generatedNumbers.Intersect(winningNumbers).Count();
-        return matches > 0 ? $"You have {matches} matches." : "You have no matches.";
+        using (var file = new StreamWriter(fileName))
+        {
+            foreach (var number in generatedNumbers)
+            {
+                file.WriteLine(number);
+            }
+        }
     }
 
     //the Winning numbers could be read from a file, a database, or an external API
@@ -34,14 +42,9 @@
         return GetNumbers();
     }
 
-    public void SaveNumbersToFile(List<int> generatedNumbers, string fileName)
-    {        
-        using (var file = new StreamWriter(fileName))
-        {            
-            foreach (var number in generatedNumbers)
-            {
-                file.WriteLine(number);
-            }
-        }
+    public string CompareNumbers(List<int> generatedNumbers, List<int> winningNumbers)
+    {
+        var matches = generatedNumbers.Intersect(winningNumbers).Count();
+        return matches > 0 ? $"You have {matches} matches." : "You have no matches.";
     }
 }
