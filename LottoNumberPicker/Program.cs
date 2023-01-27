@@ -1,4 +1,6 @@
-﻿var gameTypeMap = new Dictionary<int, GameType>()
+﻿using System.Text.RegularExpressions;
+
+var gameTypeMap = new Dictionary<int, GameType>()
         {
             { 1, GameType.Loto },
             { 2, GameType.SuperKino },
@@ -39,8 +41,9 @@ if (answer.ToLower() == "y")
         var generatedTest = test.GetNumbers();
         var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
         Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
-        var result = test.CompareNumbers(generatedTest, winningNumbers);
-        Console.WriteLine(result);
+        var result = test.GetMatchingCount(generatedTest, winningNumbers);
+        var matches = result > 0 ? $"You have {result} matches." : "You have no matches.";
+        Console.WriteLine(matches);
     }
 }
 else
