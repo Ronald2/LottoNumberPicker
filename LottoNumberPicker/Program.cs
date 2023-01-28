@@ -41,8 +41,9 @@ if (answer.ToLower() == "y")
         var generatedTest = test.GetNumbers();
         var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
         Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
-        var result = test.GetMatchingCount(generatedTest, winningNumbers);
-        var matches = result > 0 ? $"You have {result} matches." : "You have no matches.";
+        var matchedNumbers = test.GetMatchingNumbers(generatedTest, winningNumbers);
+        var matches = matchedNumbers.Count > 0 ? $"You have {matchedNumbers.Count} matches. These are: {string.Join(",", matchedNumbers)}" 
+            : "You have no matches.";
         Console.WriteLine(matches);
     }
 }

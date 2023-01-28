@@ -42,9 +42,9 @@
         return GetNumbers();
     }
 
-    public int GetMatchingCount(List<int> generatedNumbers, List<int> winningNumbers)
+    public List<int> GetMatchingNumbers(List<int> generatedNumbers, List<int> winningNumbers)
     {
-        var matches = generatedNumbers.Intersect(winningNumbers).Count();
+        var matches = generatedNumbers.Intersect(winningNumbers).ToList();
         return matches;
     }
 }
