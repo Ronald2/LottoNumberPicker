@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-var gameTypeMap = new Dictionary<int, GameType>()
+﻿var gameTypeMap = new Dictionary<int, GameType>()
         {
             { 1, GameType.Loto },
             { 2, GameType.SuperKino },
@@ -29,33 +27,43 @@ if (!int.TryParse(Console.ReadLine(), out numberOfLists) || numberOfLists <= 0)
 }
 
 Console.WriteLine("Do you want to compare the numbers with the winning numbers? (Y/N)");
-string answer = Console.ReadLine();
-if (answer.ToLower() == "y")
+string answer = Console.ReadLine().ToLower();
+
+DisplayResult(test, numberOfLists, answer);
+
+void DisplayResult(LotoTest test, int numberOfLists, string answer)
 {
-    var winningNumbers = test.GetWinningNumbers();
-    var winningNumbersString = string.Join(", ", winningNumbers.Select(x => string.Format("{0:D2}", x)));
-    Console.WriteLine("Winning Numbers: " + winningNumbersString);
+    var winningNumbers = answer == "y" ? test.GetWinningNumbers() : null;
+
+    if (winningNumbers != null)
+    {
+        Console.WriteLine($"Winning Numbers: {string.Join(", ", winningNumbers.Select(x => $"{x:D2}"))}");
+    }
 
     for (int i = 1; i <= numberOfLists; i++)
     {
         var generatedTest = test.GetNumbers();
         var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
         Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
-        var matchedNumbers = test.GetMatchingNumbers(generatedTest, winningNumbers);
-        var matches = matchedNumbers.Count > 0 ? $"You have {matchedNumbers.Count} matches. These are: {string.Join(",", matchedNumbers)}" 
-            : "You have no matches.";
-        Console.WriteLine(matches);
+
+        if (winningNumbers != null)
+        {
+            var matchedNumbers = test.GetMatchingNumbers(generatedTest, winningNumbers);
+            var matches = matchedNumbers.Count > 0
+                ? $"You have {matchedNumbers.Count} matches. These are: {string.Join(",", matchedNumbers)}"
+                : "You have no matches.";
+            Console.WriteLine(matches);
+        }
     }
 }
-else
-{
-    for (int i = 1; i <= numberOfLists; i++)
-    {
-        var generatedTest = test.GetNumbers();
-        var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
-        Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
-    }
-}
+
+
+
+//var generatedTest = test.GetNumbers();
+//var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
+//Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
+
+
 
 ////var type = GameType.Loto;
 ////var test = new LotoTest(type);
