@@ -24,17 +24,6 @@
         return numbers.OrderBy(x => x).ToList();
     }
 
-    public void SaveNumbersToFile(List<int> generatedNumbers, string fileName)
-    {
-        using (var file = new StreamWriter(fileName))
-        {
-            foreach (var number in generatedNumbers)
-            {
-                file.WriteLine(number);
-            }
-        }
-    }
-
     //the Winning numbers could be read from a file, a database, or an external API
     //this is only for testing.
     public List<int> GetWinningNumbers()
