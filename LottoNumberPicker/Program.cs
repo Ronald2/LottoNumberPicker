@@ -33,6 +33,8 @@ DisplayResult(test, numberOfLists, answer);
 
 void DisplayResult(LotoTest test, int numberOfLists, string answer)
 {
+    test.GenerateNumbers(numberOfLists);
+
     var winningNumbers = answer == "y" ? test.GetWinningNumbers() : null;
 
     if (winningNumbers != null)
@@ -40,11 +42,11 @@ void DisplayResult(LotoTest test, int numberOfLists, string answer)
         Console.WriteLine($"Winning Numbers: {string.Join(", ", winningNumbers.Select(x => $"{x:D2}"))}");
     }
 
-    for (int i = 1; i <= numberOfLists; i++)
+    for (int i = 0; i < numberOfLists; i++)
     {
-        var generatedTest = test.GetNumbers();
+        var generatedTest = test.GeneratedLists[i].Numbers;
         var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
-        Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
+        Console.WriteLine("\nYour numbers for list " + (i + 1) + ": " + generatedTestString);
 
         if (winningNumbers != null)
         {
@@ -55,6 +57,30 @@ void DisplayResult(LotoTest test, int numberOfLists, string answer)
             Console.WriteLine(matches);
         }
     }
+
+    Console.WriteLine("\nDo you want to save the generated numbers? (Y/N)");
+    string saveAnswer = Console.ReadLine().ToLower();
+
+    if (saveAnswer == "y")
+    {
+        SaveGeneratedNumbers(test);
+    }
+}
+
+void SaveGeneratedNumbers(LotoTest test)
+{
+    string fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +  $"\\generated_numbers_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt";
+    using (StreamWriter writer = new StreamWriter(fileName))
+    {
+        writer.WriteLine("Game Type: " + gameType.ToString());
+        for (int i = 0; i < test.GeneratedLists.Count; i++)
+        {
+            var generatedTest = test.GeneratedLists[i].Numbers;
+            var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
+            writer.WriteLine("\nYour numbers for list " + (i + 1) + ": " + generatedTestString);
+        }
+    }
+    Console.WriteLine($"Generated numbers have been saved to {fileName}.");
 }
 
 

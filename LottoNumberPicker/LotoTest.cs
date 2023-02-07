@@ -2,8 +2,9 @@
 {
     private readonly Random _random = new Random();
     private readonly GameType _gameType;
+    public List<LotoList> GeneratedLists { get; set; } = new List<LotoList>();
 
-  
+
 
     public LotoTest(GameType gameType)
     {
@@ -35,5 +36,15 @@
     {
         var matches = generatedNumbers.Intersect(winningNumbers).ToList();
         return matches;
+    }
+
+    public void GenerateNumbers(int numberOfList)
+    {
+        for (int i = 0; i < numberOfList; i++)
+        {
+            var generatedTest = GetNumbers();
+            var lotoList = new LotoList(generatedTest, _gameType);
+            GeneratedLists.Add(lotoList);
+        }
     }
 }
