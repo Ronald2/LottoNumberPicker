@@ -9,4 +9,6 @@ This program is designed to generate random lotto numbers for different types of
 
 -The program has the option to compare the generated numbers with the winning numbers.
 
+-The program can save the generated list in a *.txt file.
+
 -The program checks for invalid inputs from the user.
