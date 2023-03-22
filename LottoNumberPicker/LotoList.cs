@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+
 
 public class LotoList
 {
