@@ -1,14 +1,13 @@
-﻿public class LotoTest
+public class LotoTest
 {
-    private readonly Random _random = new Random();
+    private readonly Random _random;
     private readonly GameType _gameType;
-    public List<LotoList> GeneratedLists { get; set; } = new List<LotoList>();
+    public List<LotoList> GeneratedLists { get; } = new();
 
-
-
-    public LotoTest(GameType gameType)
+    public LotoTest(GameType gameType, Random? random = null)
     {
         _gameType = gameType;
+        _random = random ?? Random.Shared;
     }
 
     public List<int> GetNumbers()
@@ -18,32 +17,34 @@
 
         while (numbers.Count < gameSettings.TotalNumbers)
         {
-            var num = _random.Next(1, gameSettings.MaxNumber + 1);
-            numbers.Add(num);
+            numbers.Add(_random.Next(1, gameSettings.MaxNumber + 1));
         }
 
         return numbers.OrderBy(x => x).ToList();
     }
 
-    //the Winning numbers could be read from a file, a database, or an external API
-    //this is only for testing.
-    public List<int> GetWinningNumbers()
+    // The winning numbers could be read from a file, a database, or an external API.
+    // This is only for testing.
+    public List<int> GetWinningNumbers() => GetNumbers();
+
+    public List<int> GetMatchingNumbers(IReadOnlyCollection<int> generatedNumbers, IReadOnlyCollection<int> winningNumbers)
     {
-        return GetNumbers();
+        return generatedNumbers.Intersect(winningNumbers).OrderBy(x => x).ToList();
     }
 
-    public List<int> GetMatchingNumbers(List<int> generatedNumbers, List<int> winningNumbers)
+    public void GenerateNumbers(int numberOfLists)
     {
-        var matches = generatedNumbers.Intersect(winningNumbers).ToList();
-        return matches;
-    }
-
-    public void GenerateNumbers(int numberOfList)
-    {
-        for (int i = 0; i < numberOfList; i++)
+        if (numberOfLists <= 0)
         {
-            var generatedTest = GetNumbers();
-            var lotoList = new LotoList(generatedTest, _gameType);
+            throw new ArgumentOutOfRangeException(nameof(numberOfLists), "The number of lists must be greater than zero.");
+        }
+
+        GeneratedLists.Clear();
+
+        for (int i = 0; i < numberOfLists; i++)
+        {
+            var generatedNumbers = GetNumbers();
+            var lotoList = new LotoList(generatedNumbers, _gameType);
             GeneratedLists.Add(lotoList);
         }
     }

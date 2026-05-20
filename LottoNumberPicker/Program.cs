@@ -1,115 +1,92 @@
-﻿var gameTypeMap = new Dictionary<int, GameType>()
-        {
-            { 1, GameType.Loto },
-            { 2, GameType.SuperKino },
-            { 3, GameType.MegaMillions },
-            { 4, GameType.PowerBall },
-            {5, GameType.PoolLoto }
-        };
+var gameTypeMap = GameTypeExtensions.BuildSelectionMap();
 
-Console.WriteLine("Please select a game type (1 for Loto, 2 for SuperKino, 3 for MegaMillions, 4 for PowerBall, 5 for Loto Pool):");
-int gameTypeInput;
-if (!int.TryParse(Console.ReadLine(), out gameTypeInput) || !gameTypeMap.ContainsKey(gameTypeInput))
+Console.WriteLine($"Please select a game type ({GameTypeExtensions.BuildSelectionPrompt()}):");
+if (!TryReadInt(out var gameTypeInput) || !gameTypeMap.TryGetValue(gameTypeInput, out var gameType))
 {
     Console.WriteLine("Invalid game type. Please select a valid option.");
     return;
 }
 
-GameType gameType = gameTypeMap[gameTypeInput];
-var test = new LotoTest(gameType);
+var lotoTest = new LotoTest(gameType);
 
 Console.WriteLine("Please enter the number of lists of numbers you want to generate:");
-int numberOfLists;
-if (!int.TryParse(Console.ReadLine(), out numberOfLists) || numberOfLists <= 0)
+if (!TryReadInt(out var numberOfLists) || numberOfLists <= 0)
 {
     Console.WriteLine("Invalid number. Please enter a valid number.");
     return;
 }
 
 Console.WriteLine("Do you want to compare the numbers with the winning numbers? (Y/N)");
-string answer = Console.ReadLine().ToLower();
+var compareWithWinningNumbers = ReadYesNo();
 
-DisplayResult(test, numberOfLists, answer);
+DisplayResult(lotoTest, gameType, numberOfLists, compareWithWinningNumbers);
 
-void DisplayResult(LotoTest test, int numberOfLists, string answer)
+static bool TryReadInt(out int value)
 {
-    test.GenerateNumbers(numberOfLists);
+    return int.TryParse(Console.ReadLine(), out value);
+}
 
-    var winningNumbers = answer == "y" ? test.GetWinningNumbers() : null;
+static bool ReadYesNo()
+{
+    var answer = Console.ReadLine()?.Trim();
+    return string.Equals(answer, "y", StringComparison.OrdinalIgnoreCase);
+}
 
-    if (winningNumbers != null)
+static string FormatNumbers(IEnumerable<int> numbers)
+{
+    return string.Join(", ", numbers.Select(x => $"{x:D2}"));
+}
+
+static void DisplayResult(LotoTest lotoTest, GameType gameType, int numberOfLists, bool compareWithWinningNumbers)
+{
+    lotoTest.GenerateNumbers(numberOfLists);
+
+    var winningNumbers = compareWithWinningNumbers ? lotoTest.GetWinningNumbers() : null;
+
+    if (winningNumbers is not null)
     {
-        Console.WriteLine($"Winning Numbers: {string.Join(", ", winningNumbers.Select(x => $"{x:D2}"))}");
+        Console.WriteLine($"Winning Numbers: {FormatNumbers(winningNumbers)}");
     }
 
-    for (int i = 0; i < numberOfLists; i++)
+    for (var i = 0; i < numberOfLists; i++)
     {
-        var generatedTest = test.GeneratedLists[i].Numbers;
-        var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
-        Console.WriteLine("\nYour numbers for list " + (i + 1) + ": " + generatedTestString);
+        var generatedNumbers = lotoTest.GeneratedLists[i].Numbers;
+        Console.WriteLine($"\nYour numbers for list {i + 1}: {FormatNumbers(generatedNumbers)}");
 
-        if (winningNumbers != null)
+        if (winningNumbers is null)
         {
-            var matchedNumbers = test.GetMatchingNumbers(generatedTest, winningNumbers);
-            var matches = matchedNumbers.Count > 0
-                ? $"You have {matchedNumbers.Count} matches. These are: {string.Join(",", matchedNumbers)}"
-                : "You have no matches.";
-            Console.WriteLine(matches);
+            continue;
         }
+
+        var matchedNumbers = lotoTest.GetMatchingNumbers(generatedNumbers, winningNumbers);
+        var message = matchedNumbers.Count > 0
+            ? $"You have {matchedNumbers.Count} matches. These are: {string.Join(", ", matchedNumbers)}"
+            : "You have no matches.";
+
+        Console.WriteLine(message);
     }
 
     Console.WriteLine("\nDo you want to save the generated numbers? (Y/N)");
-    string saveAnswer = Console.ReadLine().ToLower();
-
-    if (saveAnswer == "y")
+    if (ReadYesNo())
     {
-        SaveGeneratedNumbers(test);
+        SaveGeneratedNumbers(lotoTest, gameType);
     }
 }
 
-void SaveGeneratedNumbers(LotoTest test)
+static void SaveGeneratedNumbers(LotoTest lotoTest, GameType gameType)
 {
-    string fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +  $"\\generated_numbers_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt";
-    using (StreamWriter writer = new StreamWriter(fileName))
+    var fileName = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+        $"generated_numbers_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt");
+
+    using var writer = new StreamWriter(fileName);
+
+    writer.WriteLine($"Game Type: {gameType}");
+    for (var i = 0; i < lotoTest.GeneratedLists.Count; i++)
     {
-        writer.WriteLine("Game Type: " + gameType.ToString());
-        for (int i = 0; i < test.GeneratedLists.Count; i++)
-        {
-            var generatedTest = test.GeneratedLists[i].Numbers;
-            var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
-            writer.WriteLine("\nYour numbers for list " + (i + 1) + ": " + generatedTestString);
-        }
+        var generatedNumbers = lotoTest.GeneratedLists[i].Numbers;
+        writer.WriteLine($"\nYour numbers for list {i + 1}: {FormatNumbers(generatedNumbers)}");
     }
+
     Console.WriteLine($"Generated numbers have been saved to {fileName}.");
 }
-
-
-
-//var generatedTest = test.GetNumbers();
-//var generatedTestString = string.Join(", ", generatedTest.Select(x => string.Format("{0:D2}", x)));
-//Console.WriteLine("\nYour numbers for list " + i + ": " + generatedTestString);
-
-
-
-////var type = GameType.Loto;
-////var test = new LotoTest(type);
-////List<int> winningNumber = test.GetWinningNumbers();
-////int count = 0;
-
-
-////while (true)
-////{
-////    int match = 0;
-////    var generatedNumber = test.GetNumbers();
-////    foreach (var item in generatedNumber)
-////    {
-////        if (winningNumber.Contains(item))
-////        {
-////            match++;
-////        }
-////    }
-////    count++;
-////    if (match == 6)
-////    { break; }
-////}
-////Console.WriteLine($"you have played {count} tickets for win 6 numbers in loto");

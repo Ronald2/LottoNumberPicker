@@ -1,12 +1,10 @@
-
-
 public class LotoList
 {
-    public List<int> Numbers { get; set; }
-    public GameType GameType { get; set; }
-    public DateTime DateGenerated { get; set; }
+    public IReadOnlyList<int> Numbers { get; }
+    public GameType GameType { get; }
+    public DateTime DateGenerated { get; }
 
-    public LotoList(List<int> numbers, GameType gameType)
+    public LotoList(IReadOnlyList<int> numbers, GameType gameType)
     {
         Numbers = numbers;
         GameType = gameType;
